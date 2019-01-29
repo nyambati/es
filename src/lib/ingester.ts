@@ -24,7 +24,8 @@ class Ingester {
       await client.indices.create({ index });
       console.log(`Index ${index} has been successfully created`);
     } catch (err) {
-      throw err;
+      console.error(err);
+      process.exit();
     }
   }
 
