@@ -1,0 +1,67 @@
+{
+  "name": "es",
+  "description": "Elasticsearch Explorer",
+  "version": "0.0.0",
+  "author": "Nyambati Thomas @nyambati",
+  "bin": {
+    "es": "./bin/run"
+  },
+  "bugs": "https://github.com/nyambati/es/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^2",
+    "@types/rx": "^4.1.1",
+    "ascii-progress": "^1.0.5",
+    "elasticsearch": "^15.3.1",
+    "rxjs": "^6.3.3",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@oclif/test": "^1",
+    "@oclif/tslint": "^3",
+    "@types/chai": "^4",
+    "@types/elasticsearch": "^5.0.30",
+    "@types/mocha": "^5",
+    "@types/node": "^10.12.19",
+    "chai": "^4",
+    "globby": "^8",
+    "mocha": "^5",
+    "nyc": "^13",
+    "ts-node": "^7",
+    "tslint": "^5",
+    "typescript": "^3.2"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/nyambati/es",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "es",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "nyambati/es",
+  "scripts": {
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "tslint -p test -t stylish",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}
