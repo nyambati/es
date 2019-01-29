@@ -33,7 +33,7 @@ class Ingester {
     const { data, client, type, index } = this.args;
     this.createAndResetIndex();
     return from(data).pipe(
-      delay(500),
+      delay(100),
       concatMap(body => client.index({ index, type, body }))
     );
   }
