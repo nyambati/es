@@ -1,6 +1,6 @@
 import { Command, flags } from "@oclif/command";
 import Search from "../lib/search";
-import EsClient from "../lib/client";
+import client from "../lib/client";
 
 export default class SearchCommand extends Command {
   static description = "describe the command here";
@@ -29,18 +29,17 @@ export default class SearchCommand extends Command {
     {
       name: "index",
       required: true,
-      description: "Index to search from"
+      description: "Elasticsearch Index to search against"
     },
     {
       name: "query",
       required: true,
-      description: "Search Query to execute"
+      description: "Search query to execute"
     }
   ];
 
   async run() {
     const { args, flags } = this.parse(SearchCommand);
-    const client = new EsClient().client;
     const search = new Search({
       client,
       fuzziness: flags.fuzzy,
