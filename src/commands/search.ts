@@ -25,7 +25,18 @@ export default class SearchCommand extends Command {
     })
   };
 
-  static args = [{ name: "index" }, { name: "query" }];
+  static args = [
+    {
+      name: "index",
+      required: true,
+      description: "Index to search from"
+    },
+    {
+      name: "query",
+      required: true,
+      description: "Search Query to execute"
+    }
+  ];
 
   async run() {
     const { args, flags } = this.parse(SearchCommand);
@@ -33,6 +44,7 @@ export default class SearchCommand extends Command {
     const search = new Search({
       client,
       fuzziness: flags.fuzzy,
+      size: flags.count,
       ...args,
       ...flags
     });

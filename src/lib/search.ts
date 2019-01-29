@@ -1,5 +1,5 @@
 import { Client } from "elasticsearch";
-import { string } from "@oclif/parser/lib/flags";
+import Render from "./render";
 
 type SearchArgs = {
   index: string;
@@ -22,6 +22,7 @@ class Search {
     }
     return false;
   }
+
   parseSearchQuery(query: string) {
     const array = query.split(":");
     const term = array.splice(-1)[0];
@@ -30,9 +31,12 @@ class Search {
       term
     };
   }
+
   async find() {
     let { index, query, client, offset, size, fuzziness, type } = this.args;
+
     if (await this.hasNoIndex(index)) return;
+
     const { fields, term } = this.parseSearchQuery(query);
     fuzziness = fuzziness ? 2 : undefined;
 
@@ -55,9 +59,7 @@ class Search {
         }
       });
 
-      console.table(response.hits.hits.map(record => record._source));
-
-      // return new Render().results(response.hits);
+      return new Render(response.hits).display();
     } catch (error) {
       console.log(error.message);
       return;
