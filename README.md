@@ -19,7 +19,7 @@ $ npm install -g es
 $ es COMMAND
 running command...
 $ es (-v|--version|version)
-es/0.0.0 darwin-x64 node-v11.6.0
+es/0.0.0 darwin-x64 node-v8.9.3
 $ es --help [COMMAND]
 USAGE
   $ es COMMAND
@@ -28,9 +28,26 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`es config [FILE]`](#es-config-file)
 * [`es help [COMMAND]`](#es-help-command)
 * [`es ingest`](#es-ingest)
-* [`es search [FILE]`](#es-search-file)
+* [`es search INDEX QUERY`](#es-search-index-query)
+
+## `es config [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ es config [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/config.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config.ts)_
 
 ## `es help [COMMAND]`
 
@@ -65,18 +82,24 @@ OPTIONS
 
 _See code: [src/commands/ingest.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/ingest.ts)_
 
-## `es search [FILE]`
+## `es search INDEX QUERY`
 
 describe the command here
 
 ```
 USAGE
-  $ es search [FILE]
+  $ es search INDEX QUERY
+
+ARGUMENTS
+  INDEX  Elasticsearch Index to search against
+  QUERY  Search query to execute
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -c, --count=count    Number of results to return
+  -f, --fuzzy          Enable Fuzziness
+  -o, --offset=offset  Search results offset
+  -s, --sort=sort      Sort
+  -t, --type=type      Elasticsearch Type
 ```
 
 _See code: [src/commands/search.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/search.ts)_

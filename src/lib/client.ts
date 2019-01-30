@@ -1,21 +1,18 @@
 import { Client } from "elasticsearch";
 
 class EsClient {
-  public client: Client;
-  private host: string;
+  constructor(private uri: string) {}
 
-  constructor() {
-    this.host = process.env.ES_HOST || "localhost:9200";
-    this.ensureHostConnection();
-    this.client = new Client({ host: this.host });
+  get client() {
+    return new Client({ host: this.uri });
   }
 
   async ensureHostConnection() {
-    if (!this.host) {
+    if (!this.uri) {
       console.log("Elasticsearch host has not been set");
       process.exit(1);
     }
   }
 }
 
-export default new EsClient().client;
+export default EsClient;
