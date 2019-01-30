@@ -1,22 +1,15 @@
 import { Command, flags } from "@oclif/command";
 import * as fs from "fs-extra";
 import * as path from "path";
-import { catchError } from "rxjs/operators";
 
-export default class Config extends Command {
-  static description = "describe the command here";
+export default class ConfigSet extends Command {
+  static description = "Set CLI configuration";
 
   static flags = {
-    uri: flags.help({
-      char: "h",
-      description: "Elasticsearch Host URI",
-      required: true
-    })
+    uri: flags.string({ char: "h" })
   };
-
   async run() {
-    const { flags } = this.parse(Config);
-
+    const { args, flags } = this.parse(ConfigSet);
     if (!fs.existsSync(this.config.configDir)) {
       fs.mkdirSync(this.config.configDir);
     }

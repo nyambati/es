@@ -19,7 +19,7 @@ $ npm install -g es
 $ es COMMAND
 running command...
 $ es (-v|--version|version)
-es/0.0.0 darwin-x64 node-v8.9.3
+es/0.0.0 darwin-x64 node-v10.15.1
 $ es --help [COMMAND]
 USAGE
   $ es COMMAND
@@ -28,18 +28,30 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`es config [FILE]`](#es-config-file)
+* [`es config:get`](#es-configget)
+* [`es config:set [FILE]`](#es-configset-file)
 * [`es help [COMMAND]`](#es-help-command)
 * [`es ingest`](#es-ingest)
 * [`es search INDEX QUERY`](#es-search-index-query)
 
-## `es config [FILE]`
+## `es config:get`
+
+Return All set config
+
+```
+USAGE
+  $ es config:get
+```
+
+_See code: [src/commands/config/get.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config/get.ts)_
+
+## `es config:set [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ es config [FILE]
+  $ es config:set [FILE]
 
 OPTIONS
   -f, --force
@@ -47,7 +59,7 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/config.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config/set.ts)_
 
 ## `es help [COMMAND]`
 
