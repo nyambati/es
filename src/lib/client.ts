@@ -18,4 +18,4 @@ class EsClient {
   }
 }
 
-export default EsClient;
+export default new EsClient().client;

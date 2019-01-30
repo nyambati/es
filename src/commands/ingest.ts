@@ -4,7 +4,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as Progress from "ascii-progress";
 
-import EsClient from "../lib/client";
+import client from "../lib/client";
 
 export default class Ingest extends Command {
   static description = "Ingest data into the cluster";
@@ -43,7 +43,6 @@ export default class Ingest extends Command {
     const { flags } = this.parse(Ingest);
     const { index, type, src } = flags;
     const data = this.loadData(src);
-    const client = new EsClient().client;
 
     const ingester = new Ingester({
       client,
