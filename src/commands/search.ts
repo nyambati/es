@@ -1,6 +1,8 @@
 import { Command, flags } from "@oclif/command";
+import * as fs from "fs-extra";
+import * as path from "path";
 import Search from "../lib/search";
-import client from "../lib/client";
+import Client from "../lib/client";
 
 export default class SearchCommand extends Command {
   static description = "describe the command here";
@@ -42,8 +44,15 @@ export default class SearchCommand extends Command {
     }
   ];
 
+  async uri() {
+    const file = path.join(this.config.configDir, "config.json");
+    const response = await fs.readJSON(file);
+    return response.url;
+  }
+
   async run() {
     const { args, flags } = this.parse(SearchCommand);
+    const client = await new Client(await this.uri()).client();
     const search = new Search({
       client,
       fuzziness: flags.fuzzy,

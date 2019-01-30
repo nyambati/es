@@ -1,21 +1,35 @@
 import { Client } from "elasticsearch";
+import * as wait from "wait-port";
+import * as url from "url";
 
 class EsClient {
-  public client: Client;
-  private host: string;
+  constructor(private uri: string) {}
 
-  constructor() {
-    this.host = process.env.ES_HOST || "localhost:9200";
-    this.ensureHostConnection();
-    this.client = new Client({ host: this.host });
-  }
+  async client() {
+    try {
+      const connected = await this.ensureHostConnection();
+      if (!connected) {
+        console.log(`Failed to establish connection to ${this.uri}`);
+        process.exit(1);
+      }
 
-  async ensureHostConnection() {
-    if (!this.host) {
-      console.log("Elasticsearch host has not been set");
+      return new Client({ host: this.uri });
+    } catch (err) {
+      console.log(err.message);
       process.exit(1);
     }
   }
+
+  async ensureHostConnection() {
+    const uri = url.parse(this.uri);
+    const port = uri.protocol === "https" ? 443 : 80;
+    const params = {
+      host: uri.hostname,
+      port: Number(uri.port) || port,
+      timeout: 3000
+    };
+    return wait(params);
+  }
 }
 
-export default new EsClient().client;
+export default EsClient;

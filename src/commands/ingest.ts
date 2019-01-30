@@ -1,10 +1,10 @@
 import { Command, flags } from "@oclif/command";
 import Ingester from "../lib/ingester";
 import * as path from "path";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 import * as Progress from "ascii-progress";
 
-import client from "../lib/client";
+import Client from "../lib/client";
 
 export default class Ingest extends Command {
   static description = "Ingest data into the cluster";
@@ -39,10 +39,17 @@ export default class Ingest extends Command {
     return require(path.resolve(src));
   }
 
+  async uri() {
+    const file = path.join(this.config.configDir, "config.json");
+    const response = await fs.readJSON(file);
+    return response.url;
+  }
+
   async run() {
     const { flags } = this.parse(Ingest);
     const { index, type, src } = flags;
     const data = this.loadData(src);
+    const client = await new Client(await this.uri()).client();
 
     const ingester = new Ingester({
       client,

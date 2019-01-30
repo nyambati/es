@@ -19,7 +19,7 @@ $ npm install -g es
 $ es COMMAND
 running command...
 $ es (-v|--version|version)
-es/0.0.0 darwin-x64 node-v11.6.0
+es/0.0.0 darwin-x64 node-v10.15.1
 $ es --help [COMMAND]
 USAGE
   $ es COMMAND
@@ -28,9 +28,38 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`es config:get`](#es-configget)
+* [`es config:set`](#es-configset)
 * [`es help [COMMAND]`](#es-help-command)
+* [`es index:delete [FILE]`](#es-indexdelete-file)
+* [`es index:list [FILE]`](#es-indexlist-file)
 * [`es ingest`](#es-ingest)
-* [`es search [FILE]`](#es-search-file)
+* [`es search INDEX QUERY`](#es-search-index-query)
+
+## `es config:get`
+
+Show all the CLI config
+
+```
+USAGE
+  $ es config:get
+```
+
+_See code: [src/commands/config/get.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config/get.ts)_
+
+## `es config:set`
+
+Set CLI configuration
+
+```
+USAGE
+  $ es config:set
+
+OPTIONS
+  -u, --uri=uri  (required) Elasticsearch Host URI
+```
+
+_See code: [src/commands/config/set.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config/set.ts)_
 
 ## `es help [COMMAND]`
 
@@ -49,6 +78,38 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
 
+## `es index:delete [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ es index:delete [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/index/delete.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/delete.ts)_
+
+## `es index:list [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ es index:list [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/index/list.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/list.ts)_
+
 ## `es ingest`
 
 Ingest data into the cluster
@@ -65,18 +126,24 @@ OPTIONS
 
 _See code: [src/commands/ingest.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/ingest.ts)_
 
-## `es search [FILE]`
+## `es search INDEX QUERY`
 
 describe the command here
 
 ```
 USAGE
-  $ es search [FILE]
+  $ es search INDEX QUERY
+
+ARGUMENTS
+  INDEX  Elasticsearch Index to search against
+  QUERY  Search query to execute
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -c, --count=count    Number of results to return
+  -f, --fuzzy          Enable Fuzziness
+  -o, --offset=offset  Search results offset
+  -s, --sort=sort      Sort
+  -t, --type=type      Elasticsearch Type
 ```
 
 _See code: [src/commands/search.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/search.ts)_

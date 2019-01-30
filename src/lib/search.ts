@@ -54,6 +54,8 @@ class Search {
       const response = await client.search({
         index,
         sort,
+        explain: false,
+        ignoreUnavailable: true,
         body: {
           from: offset,
           type,
