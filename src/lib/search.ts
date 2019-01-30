@@ -9,6 +9,7 @@ type SearchArgs = {
   offset?: number;
   size?: number;
   type?: string;
+  sort?: string;
   fuzziness?: any;
 };
 
@@ -33,7 +34,16 @@ class Search {
   }
 
   async find() {
-    let { index, query, client, offset, size, fuzziness, type } = this.args;
+    let {
+      index,
+      query,
+      client,
+      offset,
+      size,
+      fuzziness,
+      type,
+      sort
+    } = this.args;
 
     if (await this.hasNoIndex(index)) return;
 
@@ -43,6 +53,7 @@ class Search {
     try {
       const response = await client.search({
         index,
+        sort,
         body: {
           from: offset,
           type,

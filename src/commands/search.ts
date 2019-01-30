@@ -22,6 +22,10 @@ export default class SearchCommand extends Command {
       char: "f",
       description: "Enable Fuzziness",
       default: false
+    }),
+    sort: flags.string({
+      char: "s",
+      description: "Sort"
     })
   };
 

@@ -16,7 +16,7 @@ class Render {
     if (this.hasNoData()) return;
 
     const results = this.data.hits;
-    const head = ["(index)", ...Object.keys(results[0]._source)];
+    const head = ["(Index)", ...Object.keys(results[0]._source)];
     const table = new Table({ head });
 
     results.every((result: any, index: number) =>
