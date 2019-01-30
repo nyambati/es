@@ -49,7 +49,7 @@ export default class Ingest extends Command {
     const { flags } = this.parse(Ingest);
     const { index, type, src } = flags;
     const data = this.loadData(src);
-    const client = new Client(await this.uri()).client;
+    const client = await new Client(await this.uri()).client();
 
     const ingester = new Ingester({
       client,

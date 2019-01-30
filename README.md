@@ -29,14 +29,16 @@ USAGE
 # Commands
 <!-- commands -->
 * [`es config:get`](#es-configget)
-* [`es config:set [FILE]`](#es-configset-file)
+* [`es config:set`](#es-configset)
 * [`es help [COMMAND]`](#es-help-command)
+* [`es index:delete [FILE]`](#es-indexdelete-file)
+* [`es index:list [FILE]`](#es-indexlist-file)
 * [`es ingest`](#es-ingest)
 * [`es search INDEX QUERY`](#es-search-index-query)
 
 ## `es config:get`
 
-Return All set config
+Show all the CLI config
 
 ```
 USAGE
@@ -45,18 +47,16 @@ USAGE
 
 _See code: [src/commands/config/get.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config/get.ts)_
 
-## `es config:set [FILE]`
+## `es config:set`
 
-describe the command here
+Set CLI configuration
 
 ```
 USAGE
-  $ es config:set [FILE]
+  $ es config:set
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -u, --uri=uri  (required) Elasticsearch Host URI
 ```
 
 _See code: [src/commands/config/set.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/config/set.ts)_
@@ -77,6 +77,38 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
+
+## `es index:delete [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ es index:delete [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/index/delete.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/delete.ts)_
+
+## `es index:list [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ es index:list [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/index/list.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/list.ts)_
 
 ## `es ingest`
 

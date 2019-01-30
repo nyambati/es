@@ -52,7 +52,7 @@ export default class SearchCommand extends Command {
 
   async run() {
     const { args, flags } = this.parse(SearchCommand);
-    const client = new Client(await this.uri()).client;
+    const client = await new Client(await this.uri()).client();
     const search = new Search({
       client,
       fuzziness: flags.fuzzy,
