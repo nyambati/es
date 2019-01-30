@@ -6,11 +6,11 @@ class EsClient {
   constructor(private uri: string) {}
 
   async client() {
-    console.log("Establising connection");
     try {
       const connected = await this.ensureHostConnection();
       if (!connected) {
         console.log(`Failed to establish connection to ${this.uri}`);
+        process.exit(1);
       }
 
       return new Client({ host: this.uri });
