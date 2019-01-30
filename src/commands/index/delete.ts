@@ -1,37 +1,40 @@
-import { Command, flags } from "@oclif/command";
-import * as path from "path";
-import Client from "../../lib/client";
+import {Command, flags} from '@oclif/command'
+import * as path from 'path'
+
+import {client as _client, ping} from '../../lib/client'
 
 export default class IndexDelete extends Command {
-  static description = "Delete specified index";
+  static description = 'Delete specified index'
 
   static flags = {
     index: flags.string({
-      char: "i",
+      char: 'i',
       required: true,
-      description: "Elasticsearch index"
+      description: 'Elasticsearch index'
     })
-  };
+  }
 
   async run() {
-    const { flags } = this.parse(IndexDelete);
-    const config = require(path.join(this.config.configDir, "config.json"));
+    const {flags} = this.parse(IndexDelete)
+    const config = require(path.join(this.config.configDir, 'config.json'))
 
-    const client = await new Client(config.url).client();
+    await ping(config.url, this)
 
-    if (!(await client.indices.exists({ index: flags.index }))) {
-      this.log(`Specified index ${flags.index} doesn't exist in this cluster`);
-      this.exit(1);
+    const client = _client(config.url)
+
+    if (!(await client.indices.exists({index: flags.index}))) {
+      this.log(`Specified index ${flags.index} doesn't exist in this cluster`)
+      this.exit(1)
     }
 
     try {
-      const response = await client.indices.delete({ index: flags.index });
+      const response = await client.indices.delete({index: flags.index})
       if (response.acknowledged) {
-        console.log(`Index ${flags.index} has been deleted successfully`);
+        console.log(`Index ${flags.index} has been deleted successfully`)
       }
     } catch (error) {
-      this.log(error.message);
-      this.exit(1);
+      this.log(error.message)
+      this.exit(1)
     }
   }
 }

@@ -17,16 +17,15 @@ Elasticsearch Explorer
 
 <!-- usage -->
 
-```sh-session
+```bash
 $ npm install -g es
+# or
+$ npm link
+
 $ es COMMAND
+
 running command...
-$ es (-v|--version|version)
-es/0.0.0 darwin-x64 node-v10.15.1
-$ es --help [COMMAND]
-USAGE
-  $ es COMMAND
-...
+
 ```
 
 <!-- usagestop -->

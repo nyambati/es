@@ -1,75 +1,77 @@
-import { Command, flags } from "@oclif/command";
-import Ingester from "../lib/ingester";
-import * as path from "path";
-import * as fs from "fs-extra";
-import * as Progress from "ascii-progress";
+import {Command, flags} from '@oclif/command'
+import * as Progress from 'ascii-progress'
+import * as fs from 'fs-extra'
+import * as path from 'path'
 
-import Client from "../lib/client";
+import Ingester from '../lib/ingester'
+import {client, ping} from '../lib/client'
 
 export default class Ingest extends Command {
-  static description = "Ingest data into the cluster";
+  static description = 'Ingest data into the cluster'
 
   static flags = {
     index: flags.string({
-      char: "i",
-      description: "Elasticsearch Index",
+      char: 'i',
+      description: 'Elasticsearch Index',
       required: true,
-      dependsOn: ["type", "src"]
+      dependsOn: ['type', 'src']
     }),
     type: flags.string({
-      char: "t",
-      description: "Elasticsearch Type",
+      char: 't',
+      description: 'Elasticsearch Type',
       required: true,
-      dependsOn: ["index", "src"]
+      dependsOn: ['index', 'src']
     }),
     src: flags.string({
-      char: "s",
-      description: "Location of data json file",
+      char: 's',
+      description: 'Location of data json file',
       required: true,
-      dependsOn: ["type", "index"]
+      dependsOn: ['type', 'index']
     })
-  };
+  }
 
   loadData(src: string) {
     if (!fs.existsSync(src)) {
-      console.log("Specified file doesn't exist");
-      process.exit();
+      console.log("Specified file doesn't exist")
+      process.exit()
     }
 
-    return require(path.resolve(src));
+    return require(path.resolve(src))
   }
 
-  async uri() {
-    const file = path.join(this.config.configDir, "config.json");
-    const response = await fs.readJSON(file);
-    return response.url;
+  get uri() {
+    return require(path.join(this.config.configDir, 'config.json')).url
   }
 
   async run() {
-    const { flags } = this.parse(Ingest);
-    const { index, type, src } = flags;
-    const data = this.loadData(src);
-    const client = await new Client(await this.uri()).client();
+    const {flags} = this.parse(Ingest)
+    const {index, type, src} = flags
+    const data = this.loadData(src)
+
+    // ensure there is a viable connection
+    await ping(this.uri, this)
 
     const ingester = new Ingester({
-      client,
+      client: client(await this.uri),
       index,
       type,
       data
-    });
+    })
 
     const progress = new Progress({
-      schema: "[:bar.white] :current/:total :percent",
+      schema: '[:bar.white] :current/:total :percent',
       total: data.length
-    });
+    })
 
-    ingester.start().subscribe({
-      next: _ => progress.tick(),
-      complete: _ => {
-        progress.clear();
-        console.log(`${data.length} documents have been successfuly indexed`);
+    const ingestStream = await ingester.start()
+
+    ingestStream.subscribe({
+      next: () => progress.tick(),
+      complete: () => {
+        progress.clear()
+        console.log(`${data.length} documents have been successfuly indexed`)
       },
       error: (error: Error) => console.log(error.message)
-    });
+    })
   }
 }
