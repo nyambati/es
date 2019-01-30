@@ -61,7 +61,10 @@
     "bin": "es",
     "plugins": [
       "@oclif/plugin-help"
-    ]
+    ],
+    "hooks": {
+      "init": "./lib/hooks/init/config"
+    }
   },
   "repository": "nyambati/es",
   "scripts": {

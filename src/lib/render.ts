@@ -19,9 +19,9 @@ class Render {
     const head = ['(Index)', ...Object.keys(results[0]._source)]
     const table: Table.Table = new Table({head})
 
-    results.every((result: any, index: number) => {
+    results.every((result: any, index: number) =>
       table.push([Number(index) + 1, ...Object.values(result._source)])
-    })
+    )
 
     console.log(table.toString())
     console.log()
