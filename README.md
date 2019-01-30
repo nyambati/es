@@ -1,5 +1,4 @@
-es
-==
+# es
 
 Elasticsearch Explorer
 
@@ -9,11 +8,15 @@ Elasticsearch Explorer
 [![License](https://img.shields.io/npm/l/es.svg)](https://github.com/nyambati/es/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [Usage](#usage)
+- [Commands](#commands)
+  <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g es
 $ es COMMAND
@@ -25,16 +28,23 @@ USAGE
   $ es COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`es config:get`](#es-configget)
-* [`es config:set`](#es-configset)
-* [`es help [COMMAND]`](#es-help-command)
-* [`es index:delete [FILE]`](#es-indexdelete-file)
-* [`es index:list [FILE]`](#es-indexlist-file)
-* [`es ingest`](#es-ingest)
-* [`es search INDEX QUERY`](#es-search-index-query)
+
+- [es](#es)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`es config:get`](#es-configget)
+  - [`es config:set`](#es-configset)
+  - [`es help [COMMAND]`](#es-help-command)
+  - [`es index:delete`](#es-indexdelete)
+  - [`es index:list`](#es-indexlist)
+  - [`es ingest`](#es-ingest)
+  - [`es search INDEX QUERY`](#es-search-index-query)
 
 ## `es config:get`
 
@@ -78,34 +88,31 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
 
-## `es index:delete [FILE]`
+## `es index:delete`
 
-describe the command here
+Delete Index from the cluster
 
 ```
 USAGE
-  $ es index:delete [FILE]
+  $ es index:delete
 
 OPTIONS
-  -f, --force
   -h, --help       show CLI help
-  -n, --name=name  name to print
+  -i, --index=index  (required) Elasticsearch Index
 ```
 
 _See code: [src/commands/index/delete.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/delete.ts)_
 
-## `es index:list [FILE]`
+## `es index:list`
 
-describe the command here
+List all indices in the cluster
 
 ```
 USAGE
   $ es index:list [FILE]
 
 OPTIONS
-  -f, --force
   -h, --help       show CLI help
-  -n, --name=name  name to print
 ```
 
 _See code: [src/commands/index/list.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/list.ts)_
@@ -147,4 +154,5 @@ OPTIONS
 ```
 
 _See code: [src/commands/search.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/search.ts)_
+
 <!-- commandsstop -->
