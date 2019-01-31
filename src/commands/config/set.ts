@@ -28,12 +28,7 @@ export default class ConfigSet extends Command {
     }
 
     try {
-      await fs.writeFile(
-        file,
-        JSON.stringify({
-          url: flags.uri
-        })
-      )
+      await fs.writeFile(file, JSON.stringify({url: flags.uri}))
     } catch (error) {
       this.log(error.message)
       process.exit()

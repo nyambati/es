@@ -23,18 +23,16 @@ export default class IndexDelete extends Command {
     const client = _client(config.url)
 
     if (!(await client.indices.exists({index: flags.index}))) {
-      this.log(`Specified index ${flags.index} doesn't exist in this cluster`)
-      this.exit(1)
+      this.error(`Specified index ${flags.index} doesn't exist in this cluster`)
     }
 
     try {
       const response = await client.indices.delete({index: flags.index})
       if (response.acknowledged) {
-        console.log(`Index ${flags.index} has been deleted successfully`)
+        this.log(`Index ${flags.index} has been deleted successfully`)
       }
     } catch (error) {
-      this.log(error.message)
-      this.exit(1)
+      this.error(error.message)
     }
   }
 }

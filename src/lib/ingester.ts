@@ -10,22 +10,21 @@ type IngestArgs = {
 }
 
 class Ingester {
-  constructor(readonly args: IngestArgs) {}
+  constructor(readonly args: IngestArgs, readonly cli: any) {}
 
   async createAndResetIndex() {
     const {client, index} = this.args
     if (await client.indices.exists({index})) {
-      console.log(`Index ${index} already exist resetting..`)
+      this.cli.log(`Index ${index} already exist resetting..`)
       await client.indices.delete({index})
     }
 
     // Create the index with given index name
     try {
       await client.indices.create({index})
-      console.log(`Index ${index} has been successfully created`)
+      this.cli.log(`Index ${index} has been successfully created`)
     } catch (err) {
-      console.error(err)
-      process.exit()
+      this.cli.error(err)
     }
   }
 

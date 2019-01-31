@@ -51,12 +51,14 @@ export default class Ingest extends Command {
     // ensure there is a viable connection
     await ping(this.uri, this)
 
-    const ingester = new Ingester({
+    const ingestArgs = {
       client: client(await this.uri),
       index,
       type,
       data
-    })
+    }
+
+    const ingester = new Ingester(ingestArgs, this)
 
     const progress = new Progress({
       schema: '[:bar.white] :current/:total :percent',

@@ -14,11 +14,11 @@ type SearchArgs = {
 }
 
 class Search {
-  constructor(readonly args: SearchArgs) {}
+  constructor(readonly args: SearchArgs, readonly cli: any) {}
   async hasNoIndex(index: string) {
     const {client} = this.args
     if (!(await client.indices.exists({index}))) {
-      console.log(`Specified index ${index} does not exist`)
+      this.cli.log(`Specified index ${index} does not exist`)
       return true
     }
     return false
@@ -62,10 +62,9 @@ class Search {
           }
         }
       })
-
-      return new Render(response.hits).display()
+      return new Render(response.hits, this.cli).display()
     } catch (error) {
-      console.log(error.message)
+      this.cli.error(error.message)
       return
     }
   }
