@@ -1,27 +1,14 @@
-import {Client} from 'elasticsearch'
-import Render from './render'
+import chalk from 'chalk'
 
-type SearchArgs = {
-  index: string
-  query: string
-  client: Client
-  fields?: Array<string>
-  offset?: number
-  size?: number
-  type?: string
-  sort?: string
-  fuzziness?: any
-}
+import Render from './render'
+import {SearchArgs} from './types'
 
 class Search {
-  constructor(readonly args: SearchArgs) {}
+  constructor(readonly args: SearchArgs, readonly cli: any) {}
   async hasNoIndex(index: string) {
     const {client} = this.args
-    if (!(await client.indices.exists({index}))) {
-      console.log(`Specified index ${index} does not exist`)
-      return true
-    }
-    return false
+    if (await client.indices.exists({index})) return
+    this.cli.error(`Specified index ${chalk.red(index)} does not exist`)
   }
 
   parseSearchQuery(query: string) {
@@ -36,7 +23,7 @@ class Search {
   async find() {
     let {index, query, client, offset, size, fuzziness, type, sort} = this.args
 
-    if (await this.hasNoIndex(index)) return
+    await this.hasNoIndex(index)
 
     const {fields, term} = this.parseSearchQuery(query)
     fuzziness = fuzziness ? 2 : undefined
@@ -62,11 +49,9 @@ class Search {
           }
         }
       })
-
-      return new Render(response.hits).display()
+      return new Render(response.hits, this.cli).display()
     } catch (error) {
-      console.log(error.message)
-      return
+      this.cli.error(error.message)
     }
   }
 }

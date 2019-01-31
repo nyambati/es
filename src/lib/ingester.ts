@@ -1,31 +1,38 @@
-import {Client} from 'elasticsearch'
 import {from} from 'rxjs'
 import {concatMap, delay} from 'rxjs/operators'
+import chalk from 'chalk'
 
-type IngestArgs = {
-  client: Client
-  index: string
-  type: string
-  data: any
-}
+import {IngestArgs} from './types'
 
 class Ingester {
-  constructor(readonly args: IngestArgs) {}
+  constructor(readonly args: IngestArgs, readonly cli: any) {}
 
   async createAndResetIndex() {
     const {client, index} = this.args
     if (await client.indices.exists({index})) {
-      console.log(`Index ${index} already exist resetting..`)
-      await client.indices.delete({index})
+      this.cli.log()
+      this.cli.log(
+        chalk.yellowBright(`Index ${index} already exist resetting...`)
+      )
+      try {
+        const deleted = await client.indices.delete({index})
+        if (!deleted.acknowledged) {
+          this.cli.error(`Failed to reset ${index} index`)
+        }
+        this.cli.log(chalk.greenBright('Index has been reset successfully'))
+      } catch (error) {
+        this.cli.error(error.message)
+      }
     }
 
     // Create the index with given index name
     try {
       await client.indices.create({index})
-      console.log(`Index ${index} has been successfully created`)
+      this.cli.log(
+        chalk.greenBright(`Index ${index} has been successfully created`)
+      )
     } catch (err) {
-      console.error(err)
-      process.exit()
+      this.cli.error(err)
     }
   }
 

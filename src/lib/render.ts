@@ -1,14 +1,14 @@
 import * as Table from 'cli-table2'
 
 class Render {
-  constructor(readonly data: any) {}
+  constructor(readonly data: any, readonly cli: any) {}
 
   hasNoData() {
     if (!this.data && !(this.data instanceof Object)) return false
     if (this.data.hits.length > 0) return false
-    console.log()
-    console.log('No results to display')
-    console.log()
+    this.cli.log()
+    this.cli.log('No results to display')
+    this.cli.log()
     return true
   }
 
@@ -19,14 +19,14 @@ class Render {
     const head = ['(Index)', ...Object.keys(results[0]._source)]
     const table: Table.Table = new Table({head})
 
-    results.every((result: any, index: number) =>
+    results.forEach((result: any, index: number) =>
       table.push([Number(index) + 1, ...Object.values(result._source)])
     )
 
-    console.log(table.toString())
-    console.log()
-    console.log('TOTAL RESULTS FOUND: ', this.data.total)
-    console.log()
+    this.cli.log(table.toString())
+    this.cli.log()
+    this.cli.log('TOTAL RESULTS FOUND:', this.data.total)
+    this.cli.log()
   }
 }
 

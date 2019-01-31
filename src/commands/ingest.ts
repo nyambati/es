@@ -2,6 +2,9 @@ import {Command, flags} from '@oclif/command'
 import * as Progress from 'ascii-progress'
 import * as fs from 'fs-extra'
 import * as path from 'path'
+import chalk from 'chalk'
+import {isURL} from 'validator'
+import axios, {AxiosResponse} from 'axios'
 
 import Ingester from '../lib/ingester'
 import {client, ping} from '../lib/client'
@@ -30,13 +33,30 @@ export default class Ingest extends Command {
     })
   }
 
-  loadData(src: string) {
-    if (!fs.existsSync(src)) {
-      console.log("Specified file doesn't exist")
-      process.exit()
-    }
+  async loadData(source: string) {
+    const isSourceAFile = isURL(source, {
+      require_protocol: true,
+      require_tld: false
+    })
 
-    return require(path.resolve(src))
+    switch (isSourceAFile) {
+      case false:
+        this.log(chalk.blueBright(`Indexing data from a file ${source}`))
+        if (!fs.existsSync(source)) {
+          this.error("Specified file doesn't exist")
+        }
+        return require(path.resolve(source))
+      default:
+        this.log()
+        this.log(chalk.blueBright(`Indexing data from url: ${source}`))
+        this.log()
+        try {
+          const response: AxiosResponse = await axios.get(source)
+          return response.data
+        } catch (error) {
+          this.error(error.message)
+        }
+    }
   }
 
   get uri() {
@@ -46,17 +66,19 @@ export default class Ingest extends Command {
   async run() {
     const {flags} = this.parse(Ingest)
     const {index, type, src} = flags
-    const data = this.loadData(src)
+    const data = await this.loadData(src)
 
     // ensure there is a viable connection
     await ping(this.uri, this)
 
-    const ingester = new Ingester({
+    const ingestArgs = {
       client: client(await this.uri),
       index,
       type,
       data
-    })
+    }
+
+    const ingester = new Ingester(ingestArgs, this)
 
     const progress = new Progress({
       schema: '[:bar.white] :current/:total :percent',
@@ -69,9 +91,14 @@ export default class Ingest extends Command {
       next: () => progress.tick(),
       complete: () => {
         progress.clear()
-        console.log(`${data.length} documents have been successfuly indexed`)
+        this.log(
+          chalk.greenBright(
+            `${data.length} documents have been successfuly indexed`
+          )
+        )
+        this.log()
       },
-      error: (error: Error) => console.log(error.message)
+      error: (error: Error) => this.error(error.message)
     })
   }
 }

@@ -1,7 +1,6 @@
 {
   "extends": "@oclif/tslint",
   "rules": {
-    "no-console": false,
     "ordered-imports": false
   }
 }

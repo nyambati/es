@@ -1,5 +1,4 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from 'fs-extra'
 import * as path from 'path'
 import Search from '../lib/search'
 import {client, ping} from '../lib/client'
@@ -54,13 +53,15 @@ export default class SearchCommand extends Command {
     // Ensure we have a working conncetion
     await ping(this.uri, this)
 
-    const search = new Search({
+    const searchArgs = {
       client: client(this.uri),
       fuzziness: flags.fuzzy,
       size: flags.count,
       ...args,
       ...flags
-    })
+    }
+
+    const search = new Search(searchArgs, this)
     await search.find()
   }
 }

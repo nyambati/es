@@ -9,6 +9,7 @@ Elasticsearch Explorer
 
 <!-- toc -->
 
+- [es](#es)
 - [Usage](#usage)
 - [Commands](#commands)
   <!-- tocstop -->
@@ -17,15 +18,16 @@ Elasticsearch Explorer
 
 <!-- usage -->
 
-```bash
+```sh-session
 $ npm install -g es
-# or
-$ npm link
-
 $ es COMMAND
-
 running command...
-
+$ es (-v|--version|version)
+es/0.0.0 darwin-x64 node-v10.15.1
+$ es --help [COMMAND]
+USAGE
+  $ es COMMAND
+...
 ```
 
 <!-- usagestop -->
@@ -44,6 +46,7 @@ running command...
   - [`es index:list`](#es-indexlist)
   - [`es ingest`](#es-ingest)
   - [`es search INDEX QUERY`](#es-search-index-query)
+  - [Installation](#installation)
 
 ## `es config:get`
 
@@ -89,29 +92,25 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4
 
 ## `es index:delete`
 
-Delete Index from the cluster
+Delete specified index
 
 ```
 USAGE
   $ es index:delete
 
 OPTIONS
-  -h, --help       show CLI help
-  -i, --index=index  (required) Elasticsearch Index
+  -i, --index=index  (required) Elasticsearch index
 ```
 
 _See code: [src/commands/index/delete.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/delete.ts)_
 
 ## `es index:list`
 
-List all indices in the cluster
+List all indices in the Cluster
 
 ```
 USAGE
-  $ es index:list [FILE]
-
-OPTIONS
-  -h, --help       show CLI help
+  $ es index:list
 ```
 
 _See code: [src/commands/index/list.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/index/list.ts)_
@@ -134,7 +133,7 @@ _See code: [src/commands/ingest.ts](https://github.com/nyambati/es/blob/v0.0.0/s
 
 ## `es search INDEX QUERY`
 
-describe the command here
+Search documents
 
 ```
 USAGE
@@ -155,3 +154,20 @@ OPTIONS
 _See code: [src/commands/search.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/search.ts)_
 
 <!-- commandsstop -->
+
+## Installation
+
+This CLI has not been published to NPM registry. However you can install it in the following two ways
+
+1. Link
+   You can install this packge by using `npm link` command. This enable you to make changes to the code while using the CLI.
+   ```bash
+   $ npm link
+   ```
+   After this you should be able to access the functionality by running `es [command]`. Run npm unlink to unlink the binaries.
+2. Package
+   This option enable you to package the cli into a tarball which can be installed with `npm -g install <tarball>`.
+   ```bash
+   $ npm pack
+   $ npm install <location of tarbal file>
+   ```
