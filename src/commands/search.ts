@@ -1,5 +1,4 @@
 import {Command, flags} from '@oclif/command'
-import * as fs from 'fs-extra'
 import * as path from 'path'
 import Search from '../lib/search'
 import {client, ping} from '../lib/client'

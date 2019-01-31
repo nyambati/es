@@ -15,11 +15,9 @@ export const ping = async (uri: string, cli: any) => {
     const connected = await waitFor(params)
 
     if (!connected) {
-      cli.log('Failed to establish connection')
-      cli.exit(1)
+      cli.error('Failed to establish connection')
     }
   } catch (error) {
-    cli.log(error.message)
-    cli.exit()
+    cli.error(error.message)
   }
 }

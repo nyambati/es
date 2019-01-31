@@ -2,6 +2,7 @@ import {Command, flags} from '@oclif/command'
 import * as Progress from 'ascii-progress'
 import * as fs from 'fs-extra'
 import * as path from 'path'
+import chalk from 'chalk'
 
 import Ingester from '../lib/ingester'
 import {client, ping} from '../lib/client'
@@ -70,7 +71,12 @@ export default class Ingest extends Command {
       next: () => progress.tick(),
       complete: () => {
         progress.clear()
-        this.log(`${data.length} documents have been successfuly indexed`)
+        this.log(
+          chalk.greenBright(
+            `${data.length} documents have been successfuly indexed`
+          )
+        )
+        this.log()
       },
       error: (error: Error) => this.error(error.message)
     })

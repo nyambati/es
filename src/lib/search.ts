@@ -1,3 +1,5 @@
+import chalk from 'chalk'
+
 import Render from './render'
 import {SearchArgs} from './types'
 
@@ -5,11 +7,8 @@ class Search {
   constructor(readonly args: SearchArgs, readonly cli: any) {}
   async hasNoIndex(index: string) {
     const {client} = this.args
-    if (!(await client.indices.exists({index}))) {
-      this.cli.log(`Specified index ${index} does not exist`)
-      return true
-    }
-    return false
+    if (await client.indices.exists({index})) return
+    this.cli.error(`Specified index ${chalk.red(index)} does not exist`)
   }
 
   parseSearchQuery(query: string) {
@@ -24,7 +23,7 @@ class Search {
   async find() {
     let {index, query, client, offset, size, fuzziness, type, sort} = this.args
 
-    if (await this.hasNoIndex(index)) return
+    await this.hasNoIndex(index)
 
     const {fields, term} = this.parseSearchQuery(query)
     fuzziness = fuzziness ? 2 : undefined

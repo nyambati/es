@@ -1,5 +1,7 @@
 import {from} from 'rxjs'
 import {concatMap, delay} from 'rxjs/operators'
+import chalk from 'chalk'
+
 import {IngestArgs} from './types'
 
 class Ingester {
@@ -8,14 +10,27 @@ class Ingester {
   async createAndResetIndex() {
     const {client, index} = this.args
     if (await client.indices.exists({index})) {
-      this.cli.log(`Index ${index} already exist resetting..`)
-      await client.indices.delete({index})
+      this.cli.log()
+      this.cli.log(
+        chalk.yellowBright(`Index ${index} already exist resetting...`)
+      )
+      try {
+        const deleted = await client.indices.delete({index})
+        if (!deleted.acknowledged) {
+          this.cli.error(`Failed to reset ${index} index`)
+        }
+        this.cli.log(chalk.greenBright('Index has been reset successfully'))
+      } catch (error) {
+        this.cli.error(error.message)
+      }
     }
 
     // Create the index with given index name
     try {
       await client.indices.create({index})
-      this.cli.log(`Index ${index} has been successfully created`)
+      this.cli.log(
+        chalk.greenBright(`Index ${index} has been successfully created`)
+      )
     } catch (err) {
       this.cli.error(err)
     }

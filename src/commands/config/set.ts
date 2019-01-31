@@ -1,7 +1,8 @@
 import {Command, flags} from '@oclif/command'
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import isURL from 'validator/lib/isURL'
+import {isURL} from 'validator'
+import chalk from 'chalk'
 
 export default class ConfigSet extends Command {
   static description = 'Set CLI configuration'
@@ -23,8 +24,9 @@ export default class ConfigSet extends Command {
     const file = path.join(this.config.configDir, 'config.json')
 
     if (!isURL(flags.uri, {require_protocol: true, require_tld: false})) {
-      this.log('URL specified is invalid, example http://localhost:9200')
-      this.exit(1)
+      this.error(
+        `URL specified is invalid. e.g ${chalk.blue('http://localhost:9200')}`
+      )
     }
 
     try {
@@ -35,7 +37,8 @@ export default class ConfigSet extends Command {
     }
 
     const config = await fs.readJSON(file)
-
-    this.log(`Elasticsearch host has been set to ${config.url}`)
+    this.log()
+    this.log(chalk.green(`Elasticsearch host has been set to ${config.url}`))
+    this.log()
   }
 }
