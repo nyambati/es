@@ -1,13 +1,6 @@
-import {Client} from 'elasticsearch'
 import {from} from 'rxjs'
 import {concatMap, delay} from 'rxjs/operators'
-
-type IngestArgs = {
-  client: Client
-  index: string
-  type: string
-  data: any
-}
+import {IngestArgs} from './types'
 
 class Ingester {
   constructor(readonly args: IngestArgs, readonly cli: any) {}

@@ -1,17 +1,5 @@
-import {Client} from 'elasticsearch'
 import Render from './render'
-
-type SearchArgs = {
-  index: string
-  query: string
-  client: Client
-  fields?: Array<string>
-  offset?: number
-  size?: number
-  type?: string
-  sort?: string
-  fuzziness?: any
-}
+import {SearchArgs} from './types'
 
 class Search {
   constructor(readonly args: SearchArgs, readonly cli: any) {}
@@ -65,7 +53,6 @@ class Search {
       return new Render(response.hits, this.cli).display()
     } catch (error) {
       this.cli.error(error.message)
-      return
     }
   }
 }

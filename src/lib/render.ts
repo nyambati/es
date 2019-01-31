@@ -25,7 +25,7 @@ class Render {
 
     this.cli.log(table.toString())
     this.cli.log()
-    this.cli.log('TOTAL RESULTS FOUND: ', this.data.total)
+    this.cli.log('TOTAL RESULTS FOUND:', this.data.total)
     this.cli.log()
   }
 }

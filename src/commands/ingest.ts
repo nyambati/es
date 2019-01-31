@@ -32,8 +32,7 @@ export default class Ingest extends Command {
 
   loadData(src: string) {
     if (!fs.existsSync(src)) {
-      console.log("Specified file doesn't exist")
-      process.exit()
+      this.error("Specified file doesn't exist")
     }
 
     return require(path.resolve(src))
@@ -71,9 +70,9 @@ export default class Ingest extends Command {
       next: () => progress.tick(),
       complete: () => {
         progress.clear()
-        console.log(`${data.length} documents have been successfuly indexed`)
+        this.log(`${data.length} documents have been successfuly indexed`)
       },
-      error: (error: Error) => console.log(error.message)
+      error: (error: Error) => this.error(error.message)
     })
   }
 }
