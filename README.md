@@ -159,14 +159,12 @@ _See code: [src/commands/search.ts](https://github.com/nyambati/es/blob/v0.0.0/s
 
 This CLI has not been published to NPM registry. However you can install it in the following two ways
 
-1. Link
-   You can install this packge by using `npm link` command. This enable you to make changes to the code while using the CLI.
+1. *Link* - You can install this packge by using `npm link` command. This enable you to make changes to the code while using the CLI.
    ```bash
    $ npm link
    ```
    After this you should be able to access the functionality by running `es [command]`. Run npm unlink to unlink the binaries.
-2. Package
-   This option enable you to package the cli into a tarball which can be installed with `npm -g install <tarball>`.
+2. *Package* - This option enable you to package the cli into a tarball which can be installed with `npm -g install <tarball>`.
    ```bash
    $ npm pack
    $ npm install <location of tarbal file>
