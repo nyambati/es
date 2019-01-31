@@ -8,14 +8,16 @@ Elasticsearch Explorer
 [![License](https://img.shields.io/npm/l/es.svg)](https://github.com/nyambati/es/blob/master/package.json)
 
 <!-- toc -->
-* [es](#es)
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [es](#es)
+- [Usage](#usage)
+- [Commands](#commands)
+  <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
+
 ```sh-session
 $ npm install -g es
 $ es COMMAND
@@ -27,18 +29,24 @@ USAGE
   $ es COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-* [`es config:get`](#es-configget)
-* [`es config:set`](#es-configset)
-* [`es help [COMMAND]`](#es-help-command)
-* [`es index:delete`](#es-indexdelete)
-* [`es index:list`](#es-indexlist)
-* [`es ingest`](#es-ingest)
-* [`es search INDEX QUERY`](#es-search-index-query)
+
+- [es](#es)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`es config:get`](#es-configget)
+  - [`es config:set`](#es-configset)
+  - [`es help [COMMAND]`](#es-help-command)
+  - [`es index:delete`](#es-indexdelete)
+  - [`es index:list`](#es-indexlist)
+  - [`es ingest`](#es-ingest)
+  - [`es search INDEX QUERY`](#es-search-index-query)
+  - [Installation](#installation)
 
 ## `es config:get`
 
@@ -144,4 +152,22 @@ OPTIONS
 ```
 
 _See code: [src/commands/search.ts](https://github.com/nyambati/es/blob/v0.0.0/src/commands/search.ts)_
+
 <!-- commandsstop -->
+
+## Installation
+
+This CLI has not been published to NPM registry. However you can install it in the following two ways
+
+1. Link
+   You can install this packge by using `npm link` command. This enable you to make changes to the code while using the CLI.
+   ```bash
+   $ npm link
+   ```
+   After this you should be able to access the functionality by running `es [command]`. Run npm unlink to unlink the binaries.
+2. Package
+   This option enable you to package the cli into a tarball which can be installed with `npm -g install <tarball>`.
+   ```bash
+   $ npm pack
+   $ npm install <location of tarbal file>
+   ```

@@ -3,6 +3,8 @@ import * as Progress from 'ascii-progress'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 import chalk from 'chalk'
+import {isURL} from 'validator'
+import axios, {AxiosResponse} from 'axios'
 
 import Ingester from '../lib/ingester'
 import {client, ping} from '../lib/client'
@@ -31,12 +33,30 @@ export default class Ingest extends Command {
     })
   }
 
-  loadData(src: string) {
-    if (!fs.existsSync(src)) {
-      this.error("Specified file doesn't exist")
-    }
+  async loadData(source: string) {
+    const isSourceAFile = isURL(source, {
+      require_protocol: true,
+      require_tld: false
+    })
 
-    return require(path.resolve(src))
+    switch (isSourceAFile) {
+      case false:
+        this.log(chalk.blueBright(`Indexing data from a file ${source}`))
+        if (!fs.existsSync(source)) {
+          this.error("Specified file doesn't exist")
+        }
+        return require(path.resolve(source))
+      default:
+        this.log()
+        this.log(chalk.blueBright(`Indexing data from url: ${source}`))
+        this.log()
+        try {
+          const response: AxiosResponse = await axios.get(source)
+          return response.data
+        } catch (error) {
+          this.error(error.message)
+        }
+    }
   }
 
   get uri() {
@@ -46,7 +66,7 @@ export default class Ingest extends Command {
   async run() {
     const {flags} = this.parse(Ingest)
     const {index, type, src} = flags
-    const data = this.loadData(src)
+    const data = await this.loadData(src)
 
     // ensure there is a viable connection
     await ping(this.uri, this)
